@@ -9,11 +9,12 @@ import com.rodrigues.githubrepositories.R
 import com.rodrigues.githubrepositories.databinding.ItemRepositoriesListBinding
 import com.rodrigues.githubrepositories.util.DateUtils
 import com.squareup.picasso.Picasso
+import java.io.Serializable
 
 class RepoListAdapter(
     private val clickListener: ((GitRepository) -> Unit)? = null,
     private val bottomListener: (() -> Unit)? = null
-) : RecyclerView.Adapter<RepoListAdapter.RepositoryViewHolder>() {
+) : RecyclerView.Adapter<RepoListAdapter.RepositoryViewHolder>(), Serializable {
 
     private val repositories: ArrayList<GitRepository> = arrayListOf()
     private var context: Context? = null

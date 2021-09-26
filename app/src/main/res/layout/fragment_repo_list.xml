@@ -32,6 +32,7 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingTop="36dp"
+        android:paddingBottom="64dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,4 +50,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
+
+    <FrameLayout
+        android:id="@+id/pageProgressIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/repositoriesRecyclerView"
+        tools:visibility="visible">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:indeterminate="true" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

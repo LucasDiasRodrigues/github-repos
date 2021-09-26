@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.rodrigues.domain.model.GitRepository
+import com.rodrigues.domain.model.util.Request
 import com.rodrigues.domain.model.util.Status
 import com.rodrigues.githubrepositories.databinding.FragmentRepoListBinding
 
@@ -18,7 +19,7 @@ class RepoListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: RepoListViewModel by viewModels()
 
-    private val adapter = RepoListAdapter(
+    private var adapter = RepoListAdapter(
         clickListener = {
             navigateToDetail(it)
         },
@@ -26,6 +27,18 @@ class RepoListFragment : Fragment() {
             viewModel.getNextRepositoriesPage()
         }
     )
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable("ADAPTER", adapter)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        savedInstanceState?.getSerializable("ADAPTER")?.let {
+            adapter = it as? RepoListAdapter ?: return
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -49,6 +62,7 @@ class RepoListFragment : Fragment() {
         viewModel.getRepositoriesList()
     }
 
+
     private fun setupToolbar() {
         with(binding.toolbar) {
             (activity as AppCompatActivity).setSupportActionBar(this)
@@ -66,18 +80,27 @@ class RepoListFragment : Fragment() {
     private fun setupObservables() {
         viewModel.repositoriesData.observe(viewLifecycleOwner) {
             when (it.status) {
+                Status.IDLE -> {
+                    binding.progressIndicator.hide()
+                    binding.pageProgressIndicator.isVisible = false
+                }
                 Status.LOADING -> {
-                    binding.progressIndicator.show()
+                    if (viewModel.currentPage != 1) binding.pageProgressIndicator.isVisible = true
+                    else binding.progressIndicator.show()
                 }
                 Status.SUCCESS -> {
                     binding.progressIndicator.hide()
+                    binding.pageProgressIndicator.isVisible = false
 
                     it.data?.let { data -> addRepositoriesToList(data) } ?: showErrorMessage()
+                    viewModel.repositoriesData.postValue(Request.idle())
                 }
                 else -> {
                     binding.progressIndicator.hide()
+                    binding.pageProgressIndicator.isVisible = false
 
                     showErrorMessage()
+                    viewModel.repositoriesData.postValue(Request.idle())
                 }
             }
         }
