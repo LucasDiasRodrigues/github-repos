@@ -16,7 +16,7 @@ private fun GitRepositoryDto.toGitRepository(): GitRepository {
         fullName,
         owner.toOwner(),
         htmlUrl,
-        description,
+        description ?: "",
         stargazersCount,
         forksCount,
         updatedAt

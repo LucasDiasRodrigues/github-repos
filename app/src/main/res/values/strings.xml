@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GithubRepositories</string>
+    <string name="starsCount">%s stars</string>
+    <string name="forksCount">%s forks</string>
+    <string name="repoUpdatedAt">Updated at: %s</string>
+    <string name="ownerType">type: %s</string>
 </resources>

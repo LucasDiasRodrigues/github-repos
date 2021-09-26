@@ -11,7 +11,7 @@ interface GitRepositoriesApi {
     @GET("search/repositories")
     suspend fun getGitRepositories(
         @Query("page") page: Int? = 1,
-        @Query("q") query: GitRepoLanguage,
-        @Query("sort")sort: GitRepoSortOption)
+        @Query("q") query: String,
+        @Query("sort")sort: String)
     : GitRepositoriesContainerDto
 }

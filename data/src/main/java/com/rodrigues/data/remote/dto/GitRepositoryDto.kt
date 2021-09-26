@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GitRepositoryDto(
     val id: Long,
-    val description: String,
+    val description: String?,
     val owner: GitRepoOwnerDto,
     @SerializedName("full_name") val fullName: String,
     @SerializedName("html_url") val htmlUrl: String,

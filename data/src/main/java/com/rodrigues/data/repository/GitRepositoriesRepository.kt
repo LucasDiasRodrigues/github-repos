@@ -19,7 +19,7 @@ class GitRepositoriesRepository : IRepositoriesRepository {
         language: GitRepoLanguage,
         sortOption: GitRepoSortOption
     ): List<GitRepository> {
-        return repositoriesService.getGitRepositories(page, language, sortOption)
+        return repositoriesService.getGitRepositories(page, language.description, sortOption.option)
             .getRepositoriesList()
     }
 }
