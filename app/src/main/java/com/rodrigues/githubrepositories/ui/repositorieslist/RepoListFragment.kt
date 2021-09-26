@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.rodrigues.domain.model.util.Status
 import com.rodrigues.githubrepositories.databinding.FragmentRepoListBinding
 
 class RepoListFragment : Fragment() {
@@ -15,7 +16,8 @@ class RepoListFragment : Fragment() {
     private val viewModel: RepoListViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentRepoListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -29,16 +31,34 @@ class RepoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbar()
+
+        viewModel.getRepositoriesList()
     }
 
     private fun setupToolbar() {
         with(binding.toolbar) {
             (activity as AppCompatActivity).setSupportActionBar(this)
-           // this.setupWithNavController(navController)
+            // this.setupWithNavController(navController)
         }
     }
 
     private fun setupObservables() {
+        viewModel.repositoriesData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.LOADING -> {
+
+                }
+                Status.SUCCESS -> {
+
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun setupRepositoriesList() {
 
     }
 

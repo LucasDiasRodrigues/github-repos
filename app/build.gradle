@@ -21,6 +21,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "LOG_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.NONE"
+        }
+        debug {
+            debuggable true
+            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "LOG_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.BODY"
         }
     }
     compileOptions {
@@ -49,4 +54,10 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation "com.squareup.okhttp3:logging-interceptor:3.8.1"
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    implementation project(':data')
+    implementation project(':domain')
 }
