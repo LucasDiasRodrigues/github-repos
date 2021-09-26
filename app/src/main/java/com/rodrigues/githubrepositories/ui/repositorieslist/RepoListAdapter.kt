@@ -11,10 +11,11 @@ import com.rodrigues.githubrepositories.util.DateUtils
 import com.squareup.picasso.Picasso
 
 class RepoListAdapter(
-    private val repositories: List<GitRepository>? = arrayListOf(),
-    private val listener: ((GitRepository) -> Unit)? = null
+    private val clickListener: ((GitRepository) -> Unit)? = null,
+    private val bottomListener: (() -> Unit)? = null
 ) : RecyclerView.Adapter<RepoListAdapter.RepositoryViewHolder>() {
 
+    private val repositories: ArrayList<GitRepository> = arrayListOf()
     private var context: Context? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
@@ -46,13 +47,27 @@ class RepoListAdapter(
             Picasso.with(context).load(repository.owner.avatarUrl).into(holder.binding?.ownerPic)
         }
 
-        listener?.let { listener ->
+        clickListener?.let { listener ->
             holder.itemView.setOnClickListener { listener.invoke(repository) }
+        }
+
+        if (position > (itemCount - 2) && itemCount > 10) {
+            bottomListener?.invoke()
         }
     }
 
+    fun addRepositories(newRepositories: List<GitRepository>) {
+        repositories.addAll(newRepositories)
+        notifyDataSetChanged()
+    }
+
+    fun resetRepositoriesList(newRepositories: List<GitRepository>) {
+        repositories.clear()
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
-        return repositories?.size ?: 0
+        return repositories.size ?: 0
     }
 
     inner class RepositoryViewHolder(val binding: ItemRepositoriesListBinding?) :

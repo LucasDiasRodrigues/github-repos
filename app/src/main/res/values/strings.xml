@@ -3,5 +3,5 @@
     <string name="starsCount">%s stars</string>
     <string name="forksCount">%s forks</string>
     <string name="repoUpdatedAt">Updated at: %s</string>
-    <string name="ownerType">type: %s</string>
+    <string name="ownerType">Type: %s</string>
 </resources>

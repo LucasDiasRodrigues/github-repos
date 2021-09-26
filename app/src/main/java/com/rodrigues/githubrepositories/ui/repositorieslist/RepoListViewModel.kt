@@ -17,6 +17,7 @@ class RepoListViewModel : ViewModel() {
     val repositoriesUseCases = GitRepositoriesUseCases(GitRepositoriesRepository())
 
     val repositoriesData: MutableLiveData<Request<List<GitRepository>>> = MutableLiveData()
+    var currentPage: Int = 1
 
     fun getRepositoriesList(){
         viewModelScope.launch {
@@ -24,7 +25,7 @@ class RepoListViewModel : ViewModel() {
 
             try {
                 repositoriesData.postValue(Request.success(repositoriesUseCases.getGitRepositories(
-                    page = 1,
+                    currentPage,
                     GitRepoLanguage.KOTLIN,
                     GitRepoSortOption.STARS
                 )))
@@ -35,5 +36,15 @@ class RepoListViewModel : ViewModel() {
                 Log.i("LDR", "Error")
             }
         }
+    }
+
+    fun getNextRepositoriesPage() {
+        currentPage++
+        getRepositoriesList()
+    }
+
+    fun resetRepositoriesList() {
+        currentPage = 1
+        getRepositoriesList()
     }
 }
