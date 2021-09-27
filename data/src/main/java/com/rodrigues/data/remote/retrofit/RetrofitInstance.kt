@@ -1,7 +1,5 @@
 package com.rodrigues.data.remote.retrofit
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.rodrigues.data.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,10 +20,6 @@ object RetrofitInstance {
             .client(initOkHttpClient())
             .build()
     }
-
-//    private fun initGson(): Gson {
-//        return GsonBuilder().setLenient().create()
-//    }
 
     private fun initOkHttpClient(): OkHttpClient {
         val client = OkHttpClient.Builder()

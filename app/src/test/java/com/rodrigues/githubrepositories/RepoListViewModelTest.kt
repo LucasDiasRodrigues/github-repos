@@ -79,7 +79,6 @@ class RepoListViewModelTest {
             viewModel.getNextRepositoriesPage()
             viewModel.getNextRepositoriesPage()
             viewModel.getNextRepositoriesPage()
-            val initialPage = viewModel.currentPage
             assertTrue(viewModel.currentPage == 4)
 
             viewModel.resetRepositoriesList()
