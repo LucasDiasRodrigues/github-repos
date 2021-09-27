@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class RepoListViewModel : ViewModel() {
-    val repositoriesUseCases = GitRepositoriesUseCases(GitRepositoriesRepository())
+    var repositoriesUseCases = GitRepositoriesUseCases(GitRepositoriesRepository())
 
     val repositoriesData: MutableLiveData<Request<List<GitRepository>>> = MutableLiveData()
     var currentPage: Int = 1

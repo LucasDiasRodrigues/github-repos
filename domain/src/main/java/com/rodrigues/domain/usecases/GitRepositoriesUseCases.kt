@@ -6,7 +6,6 @@ import com.rodrigues.domain.model.GitRepository
 import com.rodrigues.domain.repository.IRepositoriesRepository
 
 class GitRepositoriesUseCases(private val repositoriesRepository: IRepositoriesRepository) {
-
     suspend fun getGitRepositories(
         page: Int?,
         language: GitRepoLanguage,
