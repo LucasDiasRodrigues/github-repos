@@ -9,12 +9,11 @@ import com.rodrigues.githubrepositories.R
 import com.rodrigues.githubrepositories.databinding.ItemRepositoriesListBinding
 import com.rodrigues.githubrepositories.util.DateUtils
 import com.squareup.picasso.Picasso
-import java.io.Serializable
 
 class RepoListAdapter(
     private val clickListener: ((GitRepository) -> Unit)? = null,
     private val bottomListener: (() -> Unit)? = null
-) : RecyclerView.Adapter<RepoListAdapter.RepositoryViewHolder>(), Serializable {
+) : RecyclerView.Adapter<RepoListAdapter.RepositoryViewHolder>() {
 
     private val repositories: ArrayList<GitRepository> = arrayListOf()
     private var context: Context? = null
@@ -62,9 +61,13 @@ class RepoListAdapter(
         notifyDataSetChanged()
     }
 
-    fun resetRepositoriesList(newRepositories: List<GitRepository>) {
+    fun resetRepositoriesList() {
         repositories.clear()
         notifyDataSetChanged()
+    }
+
+    fun getRepositoriesList(): ArrayList<GitRepository> {
+        return repositories
     }
 
     override fun getItemCount(): Int {

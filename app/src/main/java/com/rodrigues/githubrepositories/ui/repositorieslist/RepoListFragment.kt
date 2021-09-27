@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.rodrigues.domain.model.GitRepository
+import com.rodrigues.domain.model.util.ErrorResponseBody
 import com.rodrigues.domain.model.util.Request
 import com.rodrigues.domain.model.util.Status
+import com.rodrigues.githubrepositories.R
 import com.rodrigues.githubrepositories.databinding.FragmentRepoListBinding
 
 class RepoListFragment : Fragment() {
@@ -29,14 +32,16 @@ class RepoListFragment : Fragment() {
     )
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putSerializable("ADAPTER", adapter)
+        outState.putSerializable("ADAPTER_LIST", adapter.getRepositoriesList())
         super.onSaveInstanceState(outState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState?.getSerializable("ADAPTER")?.let {
-            adapter = it as? RepoListAdapter ?: return
+        savedInstanceState?.getSerializable("ADAPTER_LIST")?.let {
+            (it as? ArrayList<GitRepository>)?.let { repositories ->
+                adapter.addRepositories(repositories)
+            }
         }
     }
 
@@ -72,8 +77,16 @@ class RepoListFragment : Fragment() {
 
     private fun setupRepositoriesList() {
         binding.repositoriesRecyclerView.let { list ->
-            list.isVisible = true
             list.adapter = adapter
+            list.layoutAnimation = AnimationUtils.loadLayoutAnimation(
+                list.context,
+                R.anim.layout_animation_fall_down
+            )
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            adapter.resetRepositoriesList()
+            viewModel.resetRepositoriesList()
         }
     }
 
@@ -81,25 +94,25 @@ class RepoListFragment : Fragment() {
         viewModel.repositoriesData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.IDLE -> {
-                    binding.progressIndicator.hide()
-                    binding.pageProgressIndicator.isVisible = false
+                    hideProgressIndicators()
                 }
                 Status.LOADING -> {
                     if (viewModel.currentPage != 1) binding.pageProgressIndicator.isVisible = true
                     else binding.progressIndicator.show()
                 }
                 Status.SUCCESS -> {
-                    binding.progressIndicator.hide()
-                    binding.pageProgressIndicator.isVisible = false
+                    hideProgressIndicators()
 
-                    it.data?.let { data -> addRepositoriesToList(data) } ?: showErrorMessage()
+                    it.data?.let { data -> addRepositoriesToList(data) }
+                        ?: showGenericErrorMessage()
                     viewModel.repositoriesData.postValue(Request.idle())
                 }
                 else -> {
-                    binding.progressIndicator.hide()
-                    binding.pageProgressIndicator.isVisible = false
+                    hideProgressIndicators()
 
-                    showErrorMessage()
+                    if (!it.error?.message.isNullOrBlank()) showServerErrorMessage(it.error!!)
+                    else showGenericErrorMessage()
+
                     viewModel.repositoriesData.postValue(Request.idle())
                 }
             }
@@ -108,18 +121,34 @@ class RepoListFragment : Fragment() {
 
     private fun addRepositoriesToList(repositories: List<GitRepository>) {
         adapter.addRepositories(ArrayList(repositories))
+        if (viewModel.currentPage == 1) binding.repositoriesRecyclerView.scheduleLayoutAnimation()
     }
 
-    private fun showErrorMessage() {
+    private fun showGenericErrorMessage() {
         AlertDialog.Builder(activity as AppCompatActivity)
             .setTitle("Oops... ")
             .setMessage("Looks like we had a problem :(\nPlease try again")
+            .setPositiveButton("OK", null)
+            .create()
+            .show()
+    }
+
+    private fun showServerErrorMessage(body: ErrorResponseBody) {
+        AlertDialog.Builder(activity as AppCompatActivity)
+            .setMessage(body.message)
+            .setPositiveButton("OK", null)
             .create()
             .show()
     }
 
     private fun navigateToDetail(repository: GitRepository) {
 
+    }
+
+    private fun hideProgressIndicators() {
+        binding.progressIndicator.hide()
+        binding.pageProgressIndicator.isVisible = false
+        binding.swipeRefreshLayout.isRefreshing = false
     }
 
     companion object {

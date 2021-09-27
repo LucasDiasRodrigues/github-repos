@@ -1,5 +1,7 @@
 package com.rodrigues.domain.model
 
+import java.io.Serializable
+
 data class GitRepository(
     val id: Long,
     val fullName: String,
@@ -9,4 +11,4 @@ data class GitRepository(
     val stargazersCount: Long,
     val forksCount: Long,
     val updatedAt: String,
-)
+): Serializable

@@ -1,6 +1,5 @@
 package com.rodrigues.githubrepositories.ui.repositorieslist
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,8 +9,9 @@ import com.rodrigues.domain.model.GitRepoSortOption
 import com.rodrigues.domain.model.GitRepository
 import com.rodrigues.domain.model.util.Request
 import com.rodrigues.domain.usecases.GitRepositoriesUseCases
+import com.rodrigues.githubrepositories.util.getErrorResponseBody
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import retrofit2.HttpException
 
 class RepoListViewModel : ViewModel() {
     val repositoriesUseCases = GitRepositoriesUseCases(GitRepositoriesRepository())
@@ -36,8 +36,10 @@ class RepoListViewModel : ViewModel() {
                         )
                     )
                 )
-
                 lastSuccessPage = currentPage
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                repositoriesData.postValue(Request.error(e.message(), e.getErrorResponseBody()))
             } catch (e: Exception) {
                 e.printStackTrace()
                 repositoriesData.postValue(Request.error(e.message))
@@ -52,6 +54,7 @@ class RepoListViewModel : ViewModel() {
 
     fun resetRepositoriesList() {
         currentPage = 1
+        lastSuccessPage = 0
         getRepositoriesList()
     }
 }
