@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="16dp"
     android:foreground="?selectableItemBackground"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
     app:strokeColor="#909090"
     app:strokeWidth="1dp">
@@ -41,9 +41,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/darkerGrey"
             app:layout_constraintBottom_toTopOf="@+id/headerDivider"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/darkerGrey"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,6 +51,7 @@
             android:id="@+id/repoIcon"
             android:layout_width="18dp"
             android:layout_height="18dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/round_book_white_48"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/repoName"
@@ -60,21 +61,22 @@
         <TextView
             android:id="@+id/repoName"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="24dp"
             android:layout_marginStart="8dp"
-            tools:text="name / name"
-            android:textStyle="bold"
             android:textColor="@color/purple_200"
             android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toEndOf="@id/repoIcon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="name / name" />
 
         <ImageView
             android:id="@+id/starsIcon"
             android:layout_width="18dp"
             android:layout_height="18dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/round_star_white_48"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/starsCount"
@@ -97,6 +99,7 @@
             android:id="@+id/forkIcon"
             android:layout_width="16dp"
             android:layout_height="16dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/ic_fork"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/forksCount"
@@ -130,10 +133,10 @@
             android:layout_marginTop="16dp"
             android:ellipsize="end"
             android:maxLines="3"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
             app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/headerDivider" />
+            app:layout_constraintTop_toBottomOf="@id/headerDivider"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
 
         <TextView
             android:id="@+id/repoLastUpdate"
@@ -160,6 +163,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginVertical="8dp"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@id/footerDivider" />
@@ -169,11 +173,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            tools:text="Name Name "
             app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ownerPic"
-            app:layout_constraintTop_toTopOf="@+id/ownerPic" />
+            app:layout_constraintTop_toTopOf="@+id/ownerPic"
+            tools:text="Name Name " />
 
         <TextView
             android:id="@+id/ownerType"

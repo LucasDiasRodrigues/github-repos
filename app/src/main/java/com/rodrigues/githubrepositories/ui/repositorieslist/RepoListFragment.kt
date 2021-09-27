@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.rodrigues.domain.model.GitRepository
 import com.rodrigues.domain.model.util.ErrorResponseBody
 import com.rodrigues.domain.model.util.Request
@@ -71,7 +73,7 @@ class RepoListFragment : Fragment() {
     private fun setupToolbar() {
         with(binding.toolbar) {
             (activity as AppCompatActivity).setSupportActionBar(this)
-            // this.setupWithNavController(navController)
+             this.setupWithNavController(findNavController())
         }
     }
 
@@ -142,16 +144,13 @@ class RepoListFragment : Fragment() {
     }
 
     private fun navigateToDetail(repository: GitRepository) {
-
+        val action = RepoListFragmentDirections.actionRepoListFragmentToRepoDetailsFragment(repository)
+        findNavController().navigate(action)
     }
 
     private fun hideProgressIndicators() {
         binding.progressIndicator.hide()
         binding.pageProgressIndicator.isVisible = false
         binding.swipeRefreshLayout.isRefreshing = false
-    }
-
-    companion object {
-        fun newInstance() = RepoListFragment()
     }
 }
